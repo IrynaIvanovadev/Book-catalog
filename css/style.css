@@ -1,0 +1,20 @@
+.container-fluid {
+    background-image: url(/css/old-books-with-white-background-and-copy-space.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    height: 1200px;
+}
+
+.table, 
+thead, 
+tr, 
+td, 
+th {
+    border: none;
+}
+
+.table,
+.frame-book {
+    width: 550px;
+}
