@@ -9,7 +9,7 @@ class Genre
 class GenreRepository 
 {
     constructor() {
-        this.lastId = 0;
+        this.nextId = 1;
         this.genreList = [];
     }
 
@@ -17,9 +17,24 @@ class GenreRepository
         return this.genreList.length === 0;
     }
 
-    add(genre) {
-        let id = this.lastId++;
-        this.genreList.push(new Genre(id, genre));
+    add(name) {
+        let id = this.nextId++;
+        this.genreList.push(new Genre(id, name));
+    }
+
+    update(id, name) {
+        let genre = this.genreList
+            .find(x => x.id === id);
+
+        genre.name = name;
+    }
+
+    delete(id) {
+        let index = this.genreList.findIndex(x => x.id == id);
+
+        if (index >= 0) {
+            this.genreList.splice(index, 1);
+        }
     }
 
     getAll() {
@@ -33,22 +48,38 @@ class GenreService
         this.repository = repository;
     }
 
-    add(genre) {
-        this.repository.add(genre);
+    add(genreName) {
+        this.repository.add(genreName);
 
         let repositoryGenres = this.repository.getAll();
-        this.updateGenreTable(repositoryGenres);
-        this.updateGenreList(repositoryGenres);
+        this.updateHtmlGenreTable(repositoryGenres);
+        this.updateHtmlGenreList(repositoryGenres);
     }
 
-    addRange(genres) {
-        for (let i = 0; i < genres.length; i++) {
-            this.repository.add(genres[i]);
+    addRange(genreNames) {
+        for (let i = 0; i < genreNames.length; i++) {
+            this.repository.add(genreNames[i]);
         }
 
         let repositoryGenres = this.repository.getAll();
-        this.updateGenreTable(repositoryGenres);
-        this.updateGenreList(repositoryGenres);      
+        this.updateHtmlGenreTable(repositoryGenres);
+        this.updateHtmlGenreList(repositoryGenres);      
+    }
+
+    update(id, genreName) {
+        this.repository.update(id, genreName);
+
+        let repositoryGenres = this.repository.getAll();
+        this.updateHtmlGenreTable(repositoryGenres);
+        this.updateHtmlGenreList(repositoryGenres);  
+    }
+
+    delete(id) {
+        this.repository.delete(id);
+
+        let repositoryGenres = this.repository.getAll();
+        this.updateHtmlGenreTable(repositoryGenres);
+        this.updateHtmlGenreList(repositoryGenres); 
     }
 
     seedStartupGenres() {
@@ -57,7 +88,7 @@ class GenreService
         }
     }
 
-    updateGenreTable(genres) {
+    updateHtmlGenreTable(genres) {
         if (!genres) {
             genres = this.repository.getAll();
         }
@@ -67,21 +98,17 @@ class GenreService
         for (let i = 0; i < genres.length; i++) {
             let genre = genres[i];
 
-            genreTableHtml += '<tr>';
+            genreTableHtml += `<tr data-id="${genre.id}" data-name="${genre.name}">`;
             genreTableHtml += ` <td>${genre.name}</td>`;
-            genreTableHtml += ` <td> <a href="#"> Редактировать </a> </td>`;
-            genreTableHtml += ` <td> <a href="#"> Удалить </a> </td>`;
+            genreTableHtml += ` <td> <a href="#" data-bs-toggle="modal" onclick="click_editGenre(this)"> Редактировать </a> </td>`;
+            genreTableHtml += ` <td> <a href="#" onclick="click_deleteGenre(this)"> Удалить </a> </td>`;
             genreTableHtml += '</tr>';
         }
 
         $('#genreTable > tbody').html(genreTableHtml);
     }
 
-    updateGenreList(genres) {
-        if (!genres) {
-            genres = this.repository.getAll();
-        }
-
+    updateHtmlGenreList(genres) {
         let genreListHtml = '';
 
         for (let i = 0; i < genres.length; i++) {
@@ -95,3 +122,46 @@ class GenreService
 
 let genreRepository = new GenreRepository();
 let genreService = new GenreService(genreRepository);
+
+genreService.seedStartupGenres();
+
+function click_addGenre() {
+    $('#genreModalNameInput').val('');
+    $('#genreModalNameInput').data('genreId', '');
+    $('#genreModal').modal('show');
+}
+
+function click_editGenre(button) {
+    let genreRow = $(button).closest('tr');
+    
+    let genreId = genreRow.data('id');
+    let genreName = genreRow.data('name');
+
+    let input = $('#genreModalNameInput');
+
+    input.val(genreName);
+    input.data('genreId', genreId);
+
+    $('#genreModal').modal('show');
+}
+
+function click_deleteGenre(button) {
+    let genreRow = $(button).closest('tr');
+    let genreId = genreRow.data('id');
+    genreService.delete(genreId);
+}
+
+$('#saveGenreButton').click(function() {
+    let input = $('#genreModalNameInput');
+
+    let genreId = input.data('genreId');
+    let genreName = input.val();
+
+    if (genreId) {
+        genreService.update(genreId, genreName);
+    } else {
+        genreService.add(genreName);
+    }
+
+    $('#genreModal').modal('hide');
+});
