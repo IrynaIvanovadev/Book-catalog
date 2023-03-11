@@ -29,9 +29,8 @@
                 </nav>
                 <!-- Контент кнопок -->
                 <div class="tab-content" id="nav-tabContent">
-                    <div class="tab-pane fade show active" id="nav-authors" role="tabpanel"
-                        aria-labelledby="nav-authors-tab">
-                        <table class="col-9">
+                    <div class="tab-pane fade show active" id="nav-authors" role="tabpanel" aria-labelledby="nav-authors-tab">
+                        <table class="col-9" id="authorTable">
                             <thead>
                                 <tr>
                                     <th scope="col">Авторы</th>
@@ -42,51 +41,16 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>Пушкин А.С.</td>
-                                    <td>5</td>
-                                    <td>
-                                        <a href="#">Редактировать</a>
-                                    </td>
-                                    <td>
-                                        <a href="#">Удалить</a>
-                                    </td>
-                                    <td>
-                                        <a href="#">Детали</a>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>Тургенев И.С.</td>
-                                    <td>1</td>
-                                    <td>
-                                        <a href="#">Редактировать</a>
-                                    </td>
-                                    <td>
-                                        <a href="#">Удалить</a>
-                                    </td>
-                                    <td>
-                                        <a href="#">Детали</a>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>Шевченко Т Г.</td>
-                                    <td>2</td>
-                                    <td>
-                                        <a href="#">Редактировать</a>
-                                    </td>
-                                    <td>
-                                        <a href="#">Удалить</a>
-                                    </td>
-                                    <td>
-                                        <a href="#">Детали</a>
-                                    </td>
-                                </tr>
+                                <!--------------------------------------------------------->
                             </tbody>
                         </table>
                         <div class="btn-author-done mt-4">
-                            <button type="button" class="btn-author-done btn btn-light">Добавить автора</button>
+                            <!-- ---------------------------------------------  -->
+                            <!-- -----------------------------------------------  -->
+                            <button id="addAuthorButton" type="button" class="btn btn-primary" onclick="click_addAuthor()">Добавить автора</button>
                         </div>
                     </div>
+
                     <div class="tab-pane fade" id="nav-books" role="tabpanel" aria-labelledby="nav-books-tab">
                         <table id="genreTable" class="col-10">
                             <thead>
@@ -97,72 +61,22 @@
                                 </tr>
                             </thead>
                             <tbody>
-
+                                <!-- таблица з жанрами и модальное окно для редактирования  -->
                             </tbody>
                         </table>
                         <div class="btn-author-done mt-4">
-                            <button id="addGenreButton" type="button" class="btn-author-done btn btn-light" onclick="click_addGenre()">Добавить жанр</button>
+                            <button id="addGenreButton" type="button" class="btn-genre-done btn btn-light" onclick="click_addGenre()">Добавить жанр</button>
                         </div>
                     </div>
                 </div>
-                <!-- Конец главной кнопки переключателя -->
 
-                <div class="row g-3 align-items-center mb-2">
-                    <div class="col-sm-3">
-                        <label for="lname" class="col-form-label ">Фамилия</label>
-                    </div>
-                    <div class="col-sm-6">
-                        <input type="text" id="lname" class="form-control ">
-                    </div>
-                </div>
-
-                <div class="row g-3 align-items-center mb-2">
-                    <div class="col-sm-3">
-                        <label for="fname" class="col-form-label">Имя</label>
-                    </div>
-                    <div class="col-sm-6">
-                        <input type="text" id="fname" class="form-control ">
-                    </div>
-                </div>
-
-                <div class="row g-3 align-items-center mb-2">
-                    <div class="col-sm-3">
-                        <label for="surname" class="col-form-label">Отчество</label>
-                    </div>
-                    <div class="col-sm-6">
-                        <input type="text" id="surname" class="form-control ">
-                    </div>
-                </div>
-
-                <div class="row g-3 align-items-center mb-2">
-                    <div class="col-sm-3">
-                        <label for="surname" class="col-form-label">Дата рождения</label>
-                    </div>
-                    <div class="col-sm-6">
-                        <input type="date" id="surname" class="form-control ">
-                    </div>
-                </div>
-            </div>
+            <!-- ниже форма для добавления автора и книги -->
 
             <!-- Форма книг -->
             <div class="block-books col-sm-9">
-                <div class="catalog-books">
-                    <p class="catalog-books d-flex justify-content-between">Книги:</p>
-                    <div
-                        class="frame-book d-flex justify-content-between align-self-center border border-secondary p-1 ">
-                        <!-- <div> Заглушка информация о книге -->
-                        <div class="d-flex align-items-center">Комедия 220 стр.</div>
-                        <div>
-                            <button type="button" class="btn btn-link p-0">редактировать</button><br>
-                            <button type="button" class="btn btn-link p-0">удалить</button>
-                        </div>
-                    </div>
-                </div>
 
                 <!-- Кнопка добавить форму книг -->
-                <div class="btn-author-done mt-4">
-                    <button type="button" class="btn-author-done btn btn-light">Добавить книгу</button>
-                </div>
+                
 
                 <div class="row g-3 align-items-center mb-2">
                     <div class="col-sm-2">
@@ -184,20 +98,92 @@
 
                 <div id="genreList">
                     <label>Жанр: </label>
-                    <select class="form-select" aria-label="Default select example">
-
-                    </select>
+                    <select class="form-select" aria-label="Default select example"></select>
                 </div>
             </div>
         </div>
     </div>
+
+    <!-- Модальное окно редактирования автора -->
+    <div class="modal fade" id="authorModal" tabindex="-1" role="dialog" aria-labelledby="authorModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="authorModalLabel">Modal title</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+                <div class="row g-3 align-items-center mb-2">
+                    <div class="col-sm-4">
+                        <label for="lname" class="col-form-label ">Фамилия</label>
+                    </div>
+                    <div class="col-sm-6">
+                        <input  type="text" id="authorModalLastNameInput" class="form-control ">
+                    </div>
+                </div>
+
+                <div class="row g-3 align-items-center mb-2">
+                    <div class="col-sm-4">
+                        <label for="fname" class="col-form-label">Имя</label>
+                    </div>
+                    <div class="col-sm-6">
+                        <input  type="text" id="authorModalFirstNameInput" class="form-control ">
+                    </div>
+                </div>
+
+                <div class="row g-3 align-items-center mb-2">
+                    <div class="col-sm-4">
+                        <label for="surname" class="col-form-label">Отчество</label>
+                    </div>
+                    <div class="col-sm-6">
+                        <input type="text" id="authorModalSureNameInput" class="form-control ">
+                    </div>
+                </div>
+
+                <div class="row g-3 align-items-center mb-2">
+                    <div class="col-sm-4">
+                        <label for="surname" class="col-form-label">Дата рождения</label>
+                    </div>
+                    <div class="col-sm-6">
+                        <input type="date" id="authorModalBirthdayInput" class="form-control ">
+                    </div>
+                </div>
+
+                <div class="catalog-books row g-1">
+                    <p class="catalog-books d-flex justify-content-between">Книги:</p>
+                    <div class="frame-book d-flex justify-content-between align-self-center border border-secondary p-1 ">
+                        <!-- <div> Заглушка информация о книге -->
+                        <div class="d-flex align-items-center">Том Джери Комедия 220 стр.</div>
+                        <div>
+                            <button type="button" class="btn btn-link p-0">редактировать</button><br>
+                            <button type="button" class="btn btn-link p-0">удалить</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="block-books col-sm-9">
+                    <div class="btn-author-done mt-4">
+                        <button type="button" class="btn-author-done btn btn-light">Добавить книгу</button>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
+                <button type="button" class="btn btn-primary" id="saveAuthorButton">Сохранить</button>
+            </div>
+            </div> 
+          </div>
+        </div>
+      </div>
 
     <!-- Модальное окно редактирования жанра -->
     <div class="modal fade" id="genreModal" tabindex="-1" aria-labelledby="genreModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="genreModalLabel">Редактировать жанр</h5>
+                    <h5 class="modal-title" id="genreModalLabel">Жанр</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -213,6 +199,7 @@
         </div>
     </div>
 
+    <!-- ссылки  -->
     <script src="https://code.jquery.com/jquery-3.6.3.min.js"
         integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
 
@@ -220,6 +207,7 @@
         integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
         crossorigin="anonymous"></script>
 
+    <script src="js/authors.js"></script>
     <script src="js/genre.js"></script>
     <script src="js/main.js"></script>
 </body>

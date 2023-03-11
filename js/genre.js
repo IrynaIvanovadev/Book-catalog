@@ -102,7 +102,7 @@ class GenreService
             genreTableHtml += ` <td>${genre.name}</td>`;
             genreTableHtml += ` <td> <a href="#" data-bs-toggle="modal" onclick="click_editGenre(this)"> Редактировать </a> </td>`;
             genreTableHtml += ` <td> <a href="#" onclick="click_deleteGenre(this)"> Удалить </a> </td>`;
-            genreTableHtml += '</tr>';
+            genreTableHtml += `</tr>`;
         }
 
         $('#genreTable > tbody').html(genreTableHtml);
