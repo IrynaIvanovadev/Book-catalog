@@ -124,33 +124,11 @@ $('#saveAuthorButton').click(function() {
     let lastName = $('#authorModalLastNameInput').val();
     let sureName = $('#authorModalSureNameInput').val();
     let birthday = $('#authorModalBirthdayInput').val();
-    let numberBook = $('#authorModalNumberBookInput').val();
 
-    authorService.add(firstName, lastName, sureName, birthday, numberBook);
+    authorService.add(firstName, lastName, sureName, birthday, 0);
     $('#authorModal').modal('hide');
 
-
 })
-
-
-
-
-
-$('#saveGenreButton').click(function() {
-    let input = $('#genreModalNameInput');
-
-    let genreId = input.data('genreId');
-    let genreName = input.val();
-
-    if (genreId) {
-        genreService.update(genreId, genreName);
-    } else {
-        genreService.add(genreName);
-    }
-
-    $('#genreModal').modal('hide');
-});
-
 
 
 

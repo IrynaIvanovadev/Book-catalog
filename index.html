@@ -17,7 +17,6 @@
         <div class="application-block row justify-content-start align-items-center h-25">
             <div class="col-sm-6">
                 <!-- Начало кнопок переключателя авторы и жанры -->
-                <!-- Кнопки -->
                 <nav>
                     <div class="nav nav-tabs" id="nav-tab" role="tablist">
                         <button class="nav-link active" id="nav-authors-tab" data-bs-toggle="tab"
@@ -27,7 +26,7 @@
                             type="button" role="tab" aria-controls="nav-books" aria-selected="false">Жанры</button>
                     </div>
                 </nav>
-                <!-- Контент кнопок -->
+                <!-- Контент кнопок автор и книги-->
                 <div class="tab-content" id="nav-tabContent">
                     <div class="tab-pane fade show active" id="nav-authors" role="tabpanel" aria-labelledby="nav-authors-tab">
                         <table class="col-9" id="authorTable">
@@ -45,8 +44,6 @@
                             </tbody>
                         </table>
                         <div class="btn-author-done mt-4">
-                            <!-- ---------------------------------------------  -->
-                            <!-- -----------------------------------------------  -->
                             <button id="addAuthorButton" type="button" class="btn btn-primary" onclick="click_addAuthor()">Добавить автора</button>
                         </div>
                     </div>
@@ -69,38 +66,6 @@
                         </div>
                     </div>
                 </div>
-
-            <!-- ниже форма для добавления автора и книги -->
-
-            <!-- Форма книг -->
-            <div class="block-books col-sm-9">
-
-                <!-- Кнопка добавить форму книг -->
-                
-
-                <div class="row g-3 align-items-center mb-2">
-                    <div class="col-sm-2">
-                        <label for="book-title" class="col-form-label">Название</label>
-                    </div>
-                    <div class="col-sm-4">
-                        <input type="text" id="book-title" class="form-control ">
-                    </div>
-                </div>
-
-                <div class="row g-3 align-items-center mb-2">
-                    <div class="col-sm-2">
-                        <label for="number-pages" class="col-form-label ">Количество страниц</label>
-                    </div>
-                    <div class="col-sm-4">
-                        <input type="number" id="number-pages" class="form-control">
-                    </div>
-                </div>
-
-                <div id="genreList">
-                    <label>Жанр: </label>
-                    <select class="form-select" aria-label="Default select example"></select>
-                </div>
-            </div>
         </div>
     </div>
 
@@ -108,15 +73,18 @@
     <div class="modal fade" id="authorModal" tabindex="-1" role="dialog" aria-labelledby="authorModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
           <div class="modal-content">
+
             <div class="modal-header">
-              <h5 class="modal-title" id="authorModalLabel">Modal title</h5>
+              <h5 class="modal-title" id="authorModalLabel">Форма автора</h5>
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
+
             <div class="modal-body">
+
                 <div class="row g-3 align-items-center mb-2">
-                    <div class="col-sm-4">
+                    <div class="col-sm-5">
                         <label for="lname" class="col-form-label ">Фамилия</label>
                     </div>
                     <div class="col-sm-6">
@@ -125,7 +93,7 @@
                 </div>
 
                 <div class="row g-3 align-items-center mb-2">
-                    <div class="col-sm-4">
+                    <div class="col-sm-5">
                         <label for="fname" class="col-form-label">Имя</label>
                     </div>
                     <div class="col-sm-6">
@@ -134,7 +102,7 @@
                 </div>
 
                 <div class="row g-3 align-items-center mb-2">
-                    <div class="col-sm-4">
+                    <div class="col-sm-5">
                         <label for="surname" class="col-form-label">Отчество</label>
                     </div>
                     <div class="col-sm-6">
@@ -143,7 +111,7 @@
                 </div>
 
                 <div class="row g-3 align-items-center mb-2">
-                    <div class="col-sm-4">
+                    <div class="col-sm-5">
                         <label for="surname" class="col-form-label">Дата рождения</label>
                     </div>
                     <div class="col-sm-6">
@@ -151,23 +119,53 @@
                     </div>
                 </div>
 
-                <div class="catalog-books row g-1">
+                <div class="catalog-books ">
                     <p class="catalog-books d-flex justify-content-between">Книги:</p>
-                    <div class="frame-book d-flex justify-content-between align-self-center border border-secondary p-1 ">
-                        <!-- <div> Заглушка информация о книге -->
+                    <!-- Форма книг  -->
+                    <div class="block-books">
+
+                        <div class="row g-3 align-items-center mb-2">
+                            <div class="col-sm-5">
+                                <label for="book-title" class="col-form-label">Название</label>
+                            </div>
+                            <div class="col-sm-6">
+                                <input type="text" id="nameBook" class="form-control ">
+                            </div>
+                        </div>
+        
+                        <div class="row g-3 align-items-center mb-2">
+                            <div class="col-sm-5">
+                                <label for="number-pages" class="col-form-label ">Количество страниц</label>
+                            </div>
+                            <div class="col-sm-6">
+                                <input type="number" id="number-pages" class="form-control">
+                            </div>
+                        </div>
+        
+                        <div id="genreList" class="row g-1 align-items-center mb-1">
+                            <div class="col-sm-5">
+                                <label>Жанр: </label>
+                            </div>
+                            <select class="form-select" aria-label="Default select example"></select>
+                        </div>
+                    </div>
+
+                    <!-- <div class="frame-book d-flex justify-content-between align-self-center border border-secondary p-1 ">
+                        Заглушка информация о книге
                         <div class="d-flex align-items-center">Том Джери Комедия 220 стр.</div>
                         <div>
                             <button type="button" class="btn btn-link p-0">редактировать</button><br>
                             <button type="button" class="btn btn-link p-0">удалить</button>
                         </div>
-                    </div>
+                    </div> -->
                 </div>
 
                 <div class="block-books col-sm-9">
-                    <div class="btn-author-done mt-4">
+                    <div class="btn-author-done mt-2">
                         <button type="button" class="btn-author-done btn btn-light">Добавить книгу</button>
                     </div>
                 </div>
+
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>

@@ -18,3 +18,7 @@ th {
 .frame-book {
     width: 550px;
 }
+
+.genreForm {
+    overflow: visible;
+}
