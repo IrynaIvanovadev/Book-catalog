@@ -135,7 +135,8 @@ $('#saveAuthorButton').click(function() {
     let sureName = $('#authorModalSureNameInput').val();
     let birthday = $('#authorModalBirthdayInput').val();
 
-    authorService.add(firstName, lastName, sureName, birthday, 0);
+    let temporaryBooks = bookService.getTemporaryBooks();
+    authorService.add(firstName, lastName, sureName, birthday, temporaryBooks.length);
     $('#authorModal').modal('hide');
 
 });

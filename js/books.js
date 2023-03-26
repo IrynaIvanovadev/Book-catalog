@@ -30,6 +30,10 @@ class BookService
         this.temporaryBookList = [];
     }
 
+    getTemporaryBooks() {
+        return this.temporaryBookList;
+    }
+
     addTemporaryBook(name, genreId, authorId, pageCount) {
         let book = new Book(null, name, genreId, authorId, pageCount);
         this.temporaryBookList.push(book);
