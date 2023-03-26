@@ -121,6 +121,7 @@
 
                 <div class="catalog-books ">
                     <p class="catalog-books d-flex justify-content-between">Книги:</p>
+                    <div id="bookTable"></div>
                     <!-- Форма книг  -->
                     <div class="block-books">
 
@@ -129,7 +130,7 @@
                                 <label for="book-title" class="col-form-label">Название</label>
                             </div>
                             <div class="col-sm-6">
-                                <input type="text" id="nameBook" class="form-control ">
+                                <input id="authorBookName" type="text" id="nameBook" class="form-control ">
                             </div>
                         </div>
         
@@ -138,7 +139,7 @@
                                 <label for="number-pages" class="col-form-label ">Количество страниц</label>
                             </div>
                             <div class="col-sm-6">
-                                <input type="number" id="number-pages" class="form-control">
+                                <input id="authorBookPageCount" type="number" id="number-pages" class="form-control">
                             </div>
                         </div>
         
@@ -146,27 +147,19 @@
                             <div class="col-sm-5">
                                 <label>Жанр: </label>
                             </div>
-                            <select class="form-select" aria-label="Default select example"></select>
+                            <select id="authorBookGenreId" class="form-select" aria-label="Default select example"></select>
                         </div>
                     </div>
-
-                    <!-- <div class="frame-book d-flex justify-content-between align-self-center border border-secondary p-1 ">
-                        Заглушка информация о книге
-                        <div class="d-flex align-items-center">Том Джери Комедия 220 стр.</div>
-                        <div>
-                            <button type="button" class="btn btn-link p-0">редактировать</button><br>
-                            <button type="button" class="btn btn-link p-0">удалить</button>
-                        </div>
-                    </div> -->
                 </div>
 
                 <div class="block-books col-sm-9">
                     <div class="btn-author-done mt-2">
-                        <button type="button" class="btn-author-done btn btn-light">Добавить книгу</button>
+                        <button id="addAuthorBookButton" type="button" class="btn-author-done btn btn-light">Добавить книгу</button>
                     </div>
                 </div>
 
-            </div>
+            </div> 
+
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
                 <button type="button" class="btn btn-primary" id="saveAuthorButton">Сохранить</button>
@@ -174,7 +167,6 @@
             </div> 
           </div>
         </div>
-      </div>
 
     <!-- Модальное окно редактирования жанра -->
     <div class="modal fade" id="genreModal" tabindex="-1" aria-labelledby="genreModalLabel" aria-hidden="true">
@@ -196,6 +188,7 @@
             </div>
         </div>
     </div>
+</div>
 
     <!-- ссылки  -->
     <script src="https://code.jquery.com/jquery-3.6.3.min.js"
@@ -205,8 +198,9 @@
         integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
         crossorigin="anonymous"></script>
 
-    <script src="js/authors.js"></script>
     <script src="js/genre.js"></script>
+    <script src="js/books.js"></script>
+    <script src="js/authors.js"></script>
     <script src="js/main.js"></script>
 </body>
 

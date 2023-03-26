@@ -66,7 +66,7 @@ class AuthorService
     delete(id) {
         this.repository.delete(id);
 
-        let repositoryAuthor = this.getAll();
+        let repositoryAuthor = this.repository.getAll();
         this.updateHtmlAuthorTable(repositoryAuthor);
     }
 
@@ -93,7 +93,7 @@ class AuthorService
             authorTableHtml += `<td>${author.firstName + ' ' + author.lastName[0] + '.' + author.surName[0] + '.'}</td>`;
             authorTableHtml += `<td>${author.numberBook}</td>`;
             authorTableHtml += `<td> <a href="#" data-bs-toggle="modal"> Редактировать </a> </td>`;
-            authorTableHtml += `<td> <a href="#"> Удалить </a> </td>`;
+            authorTableHtml += `<td> <a href="#" onclick="click_deleteAuthor(this)"> Удалить </a> </td>`;
             authorTableHtml += `<td> <a href="#"> Детали </a> </td>`;
             authorTableHtml += '</tr>';
         }
@@ -105,8 +105,6 @@ class AuthorService
 let authorRepository = new AuthorRepository();
 let authorService = new AuthorService(authorRepository);
 
-// <object>.<method>
-
 authorService.seedStartupAuthors();
 
 function click_addAuthor() {
@@ -116,8 +114,20 @@ function click_addAuthor() {
     $('#authorModalBirthdayInput').val('');
     $('#authorModalNumberBookInput').val('');
     $('#authorModalNameInput').data('authorId', '');
+
+    bookService.clearTemporaryBookList();
+
     $('#authorModal').modal('show');
 }
+
+$('#addAuthorBookButton').click(function() {
+    let name = $('#authorBookName').val();
+    let genreId = $('#authorBookGenreId').val();
+    let authorId = 'test';
+    let pageCount = $('#authorBookPageCount').val();
+
+    bookService.addTemporaryBook(name, genreId, authorId, pageCount);
+});
 
 $('#saveAuthorButton').click(function() {
     let firstName = $('#authorModalFirstNameInput').val();
@@ -128,7 +138,21 @@ $('#saveAuthorButton').click(function() {
     authorService.add(firstName, lastName, sureName, birthday, 0);
     $('#authorModal').modal('hide');
 
-})
+});
+
+// function click_deleteGenre(button) {
+//     let genreRow = $(button).closest('tr');
+//     let genreId = genreRow.data('id');
+//     genreService.delete(genreId);
+// }
+
+function click_deleteAuthor(button) {
+    let authorRow = $(button).closest('tr');
+    let authorId = authorRow.data('id');
+    authorService.delete(authorId);
+}
+
+
 
 
 

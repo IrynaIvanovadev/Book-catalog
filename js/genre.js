@@ -40,6 +40,10 @@ class GenreRepository
     getAll() {
         return this.genreList;
     }
+
+    getGenreNameById(id) {
+        return this.genreList.find(x => x.id === id).name;
+    }
 }
 
 class GenreService 

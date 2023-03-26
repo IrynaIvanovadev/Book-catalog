@@ -3,22 +3,6 @@
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
-    height: 1200px;
+    height: 800px;
 }
 
-.table, 
-thead, 
-tr, 
-td, 
-th {
-    border: none;
-}
-
-.table,
-.frame-book {
-    width: 550px;
-}
-
-.genreForm {
-    overflow: visible;
-}
