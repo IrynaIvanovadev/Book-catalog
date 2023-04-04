@@ -1,10 +1,10 @@
 class Author 
 {
-    constructor (id, firstName, lastName, sureName, birthday, numberBook) {
+    constructor (id, firstName, lastName, surName, birthday, numberBook) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
-        this.sureName = sureName;
+        this.surName = surName;
         this.birthday = birthday;
         this.numberBook = numberBook;
     }
@@ -21,19 +21,19 @@ class AuthorRepository
         return this.authorList.length === 0;
     }
 
-    add(lastName, firstName, sureName, birthday, numberBook) {
+    add(lastName, firstName, surName, birthday, numberBook) {
         let id = this.nextId++;
-        this.authorList.push(new Author(id, firstName, lastName, sureName, birthday, numberBook));
+        this.authorList.push(new Author(id, firstName, lastName, surName, birthday, numberBook));
         return id;
     }
 
-    update(id, firstName, lastName, sureName, birthday, numberBook) {
+    update(id, firstName, lastName, surName, birthday, numberBook) {
         let author = this.authorList
             .find(x => x.id === id);
 
         author.firstName = firstName;
         author.lastName = lastName;
-        author.sureName = sureName;
+        author.surName = surName;
         author.birthday = birthday;
         author.numberBook = numberBook;
     }
@@ -62,8 +62,8 @@ class AuthorService
         this.genreRepository = genreRepository;
     }
 
-    add(lastName, firstName, sureName, birthday, numberBook) {
-        let authorId = this.authorRepository.add(lastName, firstName, sureName, birthday, numberBook);
+    add(lastName, firstName, surName, birthday, numberBook) {
+        let authorId = this.authorRepository.add(lastName, firstName, surName, birthday, numberBook);
 
         let repositoryAuthor = this.authorRepository.getAll();
         this.updateHtmlAuthorTable(repositoryAuthor);
@@ -102,8 +102,8 @@ class AuthorService
         for (let i = 0; i < authors.length; i++) {
             let author = authors[i];
 
-            authorTableHtml += `<tr data-id="${author.id}" data-name="${author.firstName}, ${author.lastName}, ${author.sureName}">`;
-            authorTableHtml += `<td>${author.firstName + ' ' + author.lastName[0] + '.' + author.sureName[0] + '.'}</td>`;
+            authorTableHtml += `<tr data-id="${author.id}" data-name="${author.firstName}, ${author.lastName}, ${author.surName}">`;
+            authorTableHtml += `<td>${author.firstName + ' ' + author.lastName[0] + '.' + author.surName[0] + '.'}</td>`;
             authorTableHtml += `<td>${author.numberBook}</td>`;
             authorTableHtml += `<td> <a href="#" data-bs-toggle="modal"> Редактировать </a> </td>`;
             authorTableHtml += `<td> <a href="#" onclick="click_deleteAuthor(this)"> Удалить </a> </td>`;
@@ -123,7 +123,7 @@ authorService.seedStartupAuthors();
 function click_addAuthor() {
     $('#authorModalFirstNameInput').val('');
     $('#authorModalLastNameInput').val('');
-    $('#authorModalSureNameInput').val('');
+    $('#authorModalsurNameInput').val('');
     $('#authorModalBirthdayInput').val('');
     $('#authorModalNumberBookInput').val('');
     $('#authorModalNameInput').data('authorId', '');
@@ -144,11 +144,11 @@ $('#addAuthorBookButton').click(function() {
 $('#saveAuthorButton').click(function() {
     let firstName = $('#authorModalFirstNameInput').val();
     let lastName = $('#authorModalLastNameInput').val();
-    let sureName = $('#authorModalSureNameInput').val();
+    let surName = $('#authorModalsurNameInput').val();
     let birthday = $('#authorModalBirthdayInput').val();
 
     let temporaryBooks = bookService.getTemporaryBooks();
-    let authorId = authorService.add(firstName, lastName, sureName, birthday, temporaryBooks.length);
+    let authorId = authorService.add(firstName, lastName, surName, birthday, temporaryBooks.length);
 
     for (let i = 0; i < temporaryBooks.length; i++) {
         let book = temporaryBooks[i]
@@ -181,7 +181,7 @@ function showAuthorDetails(authorId) {
     authorDetailsHtml += '<tr class="frame-book d-flex flex-row mb-1 p-0">';
     authorDetailsHtml += `<td class="p-1 ps-2">${author.firstName}</td>`;
     authorDetailsHtml += `<td class="p-1">${author.lastName}</td>`;
-    authorDetailsHtml += `<td class="p-1">${author.sureName}</td>`;
+    authorDetailsHtml += `<td class="p-1">${author.surName}</td>`;
     authorDetailsHtml += `<td class="p-1">${author.birthday}</td>`;
     authorDetailsHtml += '</tr>';
     authorDetailsHtml += `<h6>Книги:</h6>`;
