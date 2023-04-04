@@ -16,10 +16,14 @@ class BookRepository
         this.bookList = [];
     }
 
-    getByAuthor(authorId){
-        bookList.filter(book => book.authorId === authorId);
+    add(name, genreId, authorId, pageCount) {
+        let id = this.nextId++;
+        this.bookList.push( new Book(id, name, genreId, authorId, pageCount));
     }
 
+    getByAuthor(authorId){
+      return this.bookList.filter(book => book.authorId === authorId);
+    }
 }
 
 class BookService
@@ -49,6 +53,14 @@ class BookService
     clearTemporaryBookList() {
         this.temporaryBookList = [];
         this.updateHtmlBookList(this.temporaryBookList);
+    }
+
+    add(name, genreId, authorId, pageCount) {
+        this.bookRepository.add(name, genreId, authorId, pageCount);
+    }
+
+    getBooksByAuthorId(id) {
+        return this.bookRepository.getByAuthor(id);
     }
 
     updateHtmlBookList(books) {

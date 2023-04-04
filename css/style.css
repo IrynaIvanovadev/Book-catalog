@@ -6,3 +6,6 @@
     height: 800px;
 }
 
+tbody, td, tfoot, th, thead, tr {
+    border-style: none;
+}

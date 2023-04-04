@@ -1,10 +1,10 @@
 class Author 
 {
-    constructor (id, firstName, lastName, surName, birthday, numberBook) {
+    constructor (id, firstName, lastName, sureName, birthday, numberBook) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
-        this.surName = surName;
+        this.sureName = sureName;
         this.birthday = birthday;
         this.numberBook = numberBook;
     }
@@ -21,18 +21,19 @@ class AuthorRepository
         return this.authorList.length === 0;
     }
 
-    add(lastName, firstName, surName, birthday, numberBook) {
+    add(lastName, firstName, sureName, birthday, numberBook) {
         let id = this.nextId++;
-        this.authorList.push(new Author(id, firstName, lastName, surName, birthday, numberBook));
+        this.authorList.push(new Author(id, firstName, lastName, sureName, birthday, numberBook));
+        return id;
     }
 
-    update(id, firstName, lastName, surName, birthday, numberBook) {
+    update(id, firstName, lastName, sureName, birthday, numberBook) {
         let author = this.authorList
             .find(x => x.id === id);
 
         author.firstName = firstName;
         author.lastName = lastName;
-        author.surName = surName;
+        author.sureName = sureName;
         author.birthday = birthday;
         author.numberBook = numberBook;
     }
@@ -48,25 +49,37 @@ class AuthorRepository
     getAll() {
         return this.authorList;
     }
+
+    getAuthorById(id) {
+        return this.authorList.find(x => x.id === id);
+    }
 }
 
 class AuthorService
 {
-    constructor(repository) {
-        this.repository = repository;
+    constructor(authorRepository, genreRepository) {
+        this.authorRepository = authorRepository;
+        this.genreRepository = genreRepository;
     }
 
-    add(lastName, firstName, surName, birthday, numberBook) {
-        this.repository.add(lastName, firstName, surName, birthday, numberBook);
+    add(lastName, firstName, sureName, birthday, numberBook) {
+        let authorId = this.authorRepository.add(lastName, firstName, sureName, birthday, numberBook);
 
-        let repositoryAuthor = this.repository.getAll();
+        let repositoryAuthor = this.authorRepository.getAll();
         this.updateHtmlAuthorTable(repositoryAuthor);
+
+        return authorId;
+    }
+
+    getAuthorById(id) {
+        return this.authorRepository.getAuthorById(id);
+        
     }
 
     delete(id) {
-        this.repository.delete(id);
+        this.authorRepository.delete(id);
 
-        let repositoryAuthor = this.repository.getAll();
+        let repositoryAuthor = this.authorRepository.getAll();
         this.updateHtmlAuthorTable(repositoryAuthor);
     }
 
@@ -81,7 +94,7 @@ class AuthorService
 
     updateHtmlAuthorTable(authors) {
         if (!authors) {
-            authors = this.repository.getAll();
+            authors = this.authorRepository.getAll();
         }
 
         let authorTableHtml = '';
@@ -89,12 +102,12 @@ class AuthorService
         for (let i = 0; i < authors.length; i++) {
             let author = authors[i];
 
-            authorTableHtml += `<tr data-id="${author.id}" data-name="${author.firstName}, ${author.lastName}, ${author.surName}">`;
-            authorTableHtml += `<td>${author.firstName + ' ' + author.lastName[0] + '.' + author.surName[0] + '.'}</td>`;
+            authorTableHtml += `<tr data-id="${author.id}" data-name="${author.firstName}, ${author.lastName}, ${author.sureName}">`;
+            authorTableHtml += `<td>${author.firstName + ' ' + author.lastName[0] + '.' + author.sureName[0] + '.'}</td>`;
             authorTableHtml += `<td>${author.numberBook}</td>`;
             authorTableHtml += `<td> <a href="#" data-bs-toggle="modal"> Редактировать </a> </td>`;
             authorTableHtml += `<td> <a href="#" onclick="click_deleteAuthor(this)"> Удалить </a> </td>`;
-            authorTableHtml += `<td> <a href="#"> Детали </a> </td>`;
+            authorTableHtml += `<td> <a href="#" onclick="click_detailsAuthor(this)"> Детали </a> </td>`;
             authorTableHtml += '</tr>';
         }
 
@@ -103,7 +116,7 @@ class AuthorService
 }
 
 let authorRepository = new AuthorRepository();
-let authorService = new AuthorService(authorRepository);
+let authorService = new AuthorService(authorRepository, genreRepository);
 
 authorService.seedStartupAuthors();
 
@@ -123,10 +136,9 @@ function click_addAuthor() {
 $('#addAuthorBookButton').click(function() {
     let name = $('#authorBookName').val();
     let genreId = $('#authorBookGenreId').val();
-    let authorId = 'test';
     let pageCount = $('#authorBookPageCount').val();
 
-    bookService.addTemporaryBook(name, genreId, authorId, pageCount);
+    bookService.addTemporaryBook(name, genreId, null, pageCount);
 });
 
 $('#saveAuthorButton').click(function() {
@@ -136,16 +148,17 @@ $('#saveAuthorButton').click(function() {
     let birthday = $('#authorModalBirthdayInput').val();
 
     let temporaryBooks = bookService.getTemporaryBooks();
-    authorService.add(firstName, lastName, sureName, birthday, temporaryBooks.length);
+    let authorId = authorService.add(firstName, lastName, sureName, birthday, temporaryBooks.length);
+
+    for (let i = 0; i < temporaryBooks.length; i++) {
+        let book = temporaryBooks[i]
+        book.authorId = authorId
+
+        bookService.add(book.name, book.genreId, book.authorId, book.pageCount);
+    }
+    
     $('#authorModal').modal('hide');
-
 });
-
-// function click_deleteGenre(button) {
-//     let genreRow = $(button).closest('tr');
-//     let genreId = genreRow.data('id');
-//     genreService.delete(genreId);
-// }
 
 function click_deleteAuthor(button) {
     let authorRow = $(button).closest('tr');
@@ -153,34 +166,43 @@ function click_deleteAuthor(button) {
     authorService.delete(authorId);
 }
 
+function click_detailsAuthor(button) {
+    let authorRow = $(button).closest('tr');
+    let authorId = authorRow.data('id');
+    showAuthorDetails(authorId);
+    $('#detailsModal').modal('show');
+}
 
+function showAuthorDetails(authorId) {
+    let author = authorService.getAuthorById(authorId);
+    let authorDetailsHtml = '';
 
+    authorDetailsHtml += `<h6 class="m-0">Автор:</h6>`;
+    authorDetailsHtml += '<tr class="frame-book d-flex flex-row mb-1 p-0">';
+    authorDetailsHtml += `<td class="p-1 ps-2">${author.firstName}</td>`;
+    authorDetailsHtml += `<td class="p-1">${author.lastName}</td>`;
+    authorDetailsHtml += `<td class="p-1">${author.sureName}</td>`;
+    authorDetailsHtml += `<td class="p-1">${author.birthday}</td>`;
+    authorDetailsHtml += '</tr>';
+    authorDetailsHtml += `<h6>Книги:</h6>`;
 
+    $('#detailsAuthorModal > tbody').html(authorDetailsHtml);
 
+    let authorBooks =  bookService.getBooksByAuthorId(authorId);
+    let authorBooksDetailsHtml = '';
 
+    for (let i = 0; i < authorBooks.length; i++) {
+      let authorBook = authorBooks[i];
+      let genreName = genreService.getGenreNameById(+authorBook.genreId);
 
-// function click_editAuthor(button) {
-//     let authorRow = $(button).closest('tr');
+      authorBooksDetailsHtml += '<tr class="frame-book d-flex flex-row mb-1 p-0">';
+      authorBooksDetailsHtml += `<td class="p-1 ps-2">${authorBook.name}</td>`;
+      authorBooksDetailsHtml += `<td class="p-1">${genreName}</td>`;
+      authorBooksDetailsHtml += `<td class="p-1">${authorBook.pageCount}</td>`;
+      authorBooksDetailsHtml += '</tr>';
+    }
+  
+    $('#detailsModal > tbody').html(authorBooksDetailsHtml);
+}
 
-//     let authorId = authorRow.data('id');
-    
-//     let authorFirstName = authorRow.data('firstName');
-//     $('#authorModalFirstName').val(authorFirstName);
-
-//     let authorLastName = authorRow.data('lastName');
-//     $('#authorModalLastName').val(authorLastName);
-
-//     let authorSureName = authorRow.data('sureName');
-//     $('#authorModalSureName').val(authorSureName);
-
-//     let authorbirthday = authorRow.data('birthday');
-//     $('#authorModalbirthday').val(authorbirthday);
-
-//     let authorNameBook = authorRow.data('nameBook');
-//     $('#authorModalNameBook').val(authorNameBook);
-
-// }
-
-
-    
 

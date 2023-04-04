@@ -70,6 +70,10 @@ class GenreService
         this.updateHtmlGenreList(repositoryGenres);      
     }
 
+    getGenreNameById(id) {
+        return this.repository.getGenreNameById(id);
+    }
+
     update(id, genreName) {
         this.repository.update(id, genreName);
 
