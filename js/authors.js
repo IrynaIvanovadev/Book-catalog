@@ -63,7 +63,7 @@ class AuthorService
     }
 
     add(lastName, firstName, surName, birthday, numberBook) {
-        let authorId = this.authorRepository.add(lastName, firstName, surName, birthday, numberBook);
+        let authorId = this.authorRepository.add(lastName, firstName, surName, new Date(birthday), numberBook);
 
         let repositoryAuthor = this.authorRepository.getAll();
         this.updateHtmlAuthorTable(repositoryAuthor);
@@ -72,7 +72,7 @@ class AuthorService
     }
 
     getAuthorById(id) {
-        return this.authorRepository.getAuthorById(id);
+        return this.authorRepository.getAuthorById(+id);
         
     }
 
@@ -84,12 +84,15 @@ class AuthorService
     }
 
     seedStartupAuthors() {
-        this.add('Иванова', 'Катя','Владимировна','20.06.1996','0');
-        this.add('Иванова', 'Катя','Владимировна','20.06.1996','0');
-        this.add('Иванова', 'Катя','Владимировна','20.06.1996','0');
-        this.add('Иванова', 'Катя','Владимировна','20.06.1996','0');
-        this.add('Иванова', 'Катя','Владимировна','20.06.1996','0');
-        this.add('Иванова', 'Катя','Владимировна','20.06.1996','0');
+        this.add('Иванова', 'Катя','Владимировна','1996-06-20','0');
+        this.add('Иванова', 'Катя','Владимировна','1996-06-20','0');
+        this.add('Иванова', 'Катя','Владимировна','1996-06-20','0');
+        this.add('Иванова', 'Катя','Владимировна','1996-06-20','0');
+        this.add('Иванова', 'Катя','Владимировна','1996-06-20','0');
+        this.add('Иванова', 'Катя','Владимировна','1996-06-20','0');
+        this.add('Иванова', 'Катя','Владимировна','1996-06-20','0');
+        this.add('Иванова', 'Катя','Владимировна','1996-06-20','0');
+
     }
 
     updateHtmlAuthorTable(authors) {
@@ -105,7 +108,7 @@ class AuthorService
             authorTableHtml += `<tr data-id="${author.id}" data-name="${author.firstName}, ${author.lastName}, ${author.surName}">`;
             authorTableHtml += `<td>${author.firstName + ' ' + author.lastName[0] + '.' + author.surName[0] + '.'}</td>`;
             authorTableHtml += `<td>${author.numberBook}</td>`;
-            authorTableHtml += `<td> <a href="#" data-bs-toggle="modal"> Редактировать </a> </td>`;
+            authorTableHtml += `<td> <a href="#" data-bs-toggle="modal" onclick="click_editAuthor(this)"> Редактировать </a> </td>`;
             authorTableHtml += `<td> <a href="#" onclick="click_deleteAuthor(this)"> Удалить </a> </td>`;
             authorTableHtml += `<td> <a href="#" onclick="click_detailsAuthor(this)"> Детали </a> </td>`;
             authorTableHtml += '</tr>';
@@ -123,10 +126,9 @@ authorService.seedStartupAuthors();
 function click_addAuthor() {
     $('#authorModalFirstNameInput').val('');
     $('#authorModalLastNameInput').val('');
-    $('#authorModalsurNameInput').val('');
+    $('#authorModalSurNameInput').val('');
     $('#authorModalBirthdayInput').val('');
     $('#authorModalNumberBookInput').val('');
-    $('#authorModalNameInput').data('authorId', '');
 
     bookService.clearTemporaryBookList();
 
@@ -144,7 +146,7 @@ $('#addAuthorBookButton').click(function() {
 $('#saveAuthorButton').click(function() {
     let firstName = $('#authorModalFirstNameInput').val();
     let lastName = $('#authorModalLastNameInput').val();
-    let surName = $('#authorModalsurNameInput').val();
+    let surName = $('#authorModalSurNameInput').val();
     let birthday = $('#authorModalBirthdayInput').val();
 
     let temporaryBooks = bookService.getTemporaryBooks();
@@ -182,7 +184,7 @@ function showAuthorDetails(authorId) {
     authorDetailsHtml += `<td class="p-1 ps-2">${author.firstName}</td>`;
     authorDetailsHtml += `<td class="p-1">${author.lastName}</td>`;
     authorDetailsHtml += `<td class="p-1">${author.surName}</td>`;
-    authorDetailsHtml += `<td class="p-1">${author.birthday}</td>`;
+    authorDetailsHtml += `<td class="p-1">${author.birthday.toISOString().split('T')[0]}</td>`;
     authorDetailsHtml += '</tr>';
     authorDetailsHtml += `<h6>Книги:</h6>`;
 
@@ -198,11 +200,24 @@ function showAuthorDetails(authorId) {
       authorBooksDetailsHtml += '<tr class="frame-book d-flex flex-row mb-1 p-0">';
       authorBooksDetailsHtml += `<td class="p-1 ps-2">${authorBook.name}</td>`;
       authorBooksDetailsHtml += `<td class="p-1">${genreName}</td>`;
-      authorBooksDetailsHtml += `<td class="p-1">${authorBook.pageCount}</td>`;
+      authorBooksDetailsHtml += `<td class="p-1">${authorBook.pageCount} стр.</td>`;
       authorBooksDetailsHtml += '</tr>';
     }
   
     $('#detailsModal > tbody').html(authorBooksDetailsHtml);
 }
 
+function click_editAuthor(button) {
+    let authorRow = $(button).closest('tr');
 
+    let authorId = authorRow.data('id');
+    let author = authorService.getAuthorById(authorId);
+
+    $('#authorModalFirstNameInput').val(author.firstName);
+    $('#authorModalLastNameInput').val(author.lastName);
+    $('#authorModalSurNameInput').val(author.surName);
+    $('#authorModalBirthdayInput').val(author.birthday.toISOString().split('T')[0]);
+    $('#authorModalNumberBookInput').val(author.numberBook);
+
+    $('#authorModal').modal('show');
+}
