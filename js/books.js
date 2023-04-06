@@ -24,6 +24,23 @@ class BookRepository
     getByAuthor(authorId){
       return this.bookList.filter(book => book.authorId === authorId);
     }
+
+    getBook(id) {
+        return this.bookList.find(book => book.id === id);
+    }
+
+    update(id, name, genreId, authorId, pageCount) {
+        let book = this.bookList.find(x => x.id === id);
+
+        book.name = name;
+        book.genreId = genreId;
+        book.authorId = authorId;
+        book.pageCount = pageCount;
+    }
+
+    getAll() {
+        return this.bookList;
+    }
 }
 
 class BookService
@@ -45,6 +62,17 @@ class BookService
         this.updateHtmlBookList(this.temporaryBookList);
     }
 
+    update(id, name, genreId, authorId, pageCount) {
+        this.bookRepository.update(id, name, genreId, authorId, pageCount);
+        let repositoryBook = this.bookRepository.getAll();
+        this.updateHtmlBookList(repositoryBook);
+    }
+
+    setTemporaryBook(books) {
+        this.temporaryBookList = books;
+        this.updateHtmlBookList(this.temporaryBookList);
+    }
+
     deleteTemporaryBookByIndex(index) {
         this.temporaryBookList.splice(index, 1);
         this.updateHtmlBookList(this.temporaryBookList);
@@ -63,7 +91,15 @@ class BookService
         return this.bookRepository.getByAuthor(id);
     }
 
+    getBookById(id) {
+        return this.bookRepository.getBook(id);
+    }
+
     updateHtmlBookList(books) {
+        if (!books) {
+            books = this.temporaryBookList;
+        }
+
         let bookTableHtml = '';
 
         for(let i = 0; i < books.length; i++) {
@@ -73,8 +109,8 @@ class BookService
             bookTableHtml += `<div class="frame-book d-flex justify-content-between align-self-center border border-secondary p-1">`;
             bookTableHtml += `<div class="frame-book d-flex justify-content-between align-self-center">${book.name} ${genreName} ${book.pageCount} стр.</div>`;
 
-            bookTableHtml += `<div>`;
-            bookTableHtml += `<button type="button" class="btn btn-link p-0"> Редактировать </button> <br>`;
+            bookTableHtml += `<div data-index="${i}">`;
+            bookTableHtml += `<button type="button" class="btn btn-link p-0" onclick="click_editTemporaryBook(this)"> Редактировать </button> <br>`;
             bookTableHtml += `<button type="button" onclick="click_deleteBook(${i})" class="btn btn-link p-0"> Удалить </button>`;
             bookTableHtml += `</div>`;
 
@@ -88,6 +124,51 @@ class BookService
 let bookRepository = new BookRepository();
 let bookService = new BookService(bookRepository, genreRepository);
 
-function click_deleteBook (index) {
+function click_deleteBook(index) {
     bookService.deleteTemporaryBookByIndex(index);
 }
+
+function click_editTemporaryBook(button) {
+    let bookRow = $(button).closest('div');
+    let index = bookRow.data('index');
+    let book = bookService.getTemporaryBooks()[index];
+    $('#editTemporaryBookModal').data('index', index);
+    
+    $('#authorBookNameIndex').val(book.name);
+    $('#authorBookPageCountIndex').val(book.pageCount);
+    $('#authorBookGenreIndex').val(book.genreId);
+
+    $('#authorModal').modal('hide');
+    $('#editTemporaryBookModal').modal('show');
+}
+
+$('#saveTemporaryBookButton').click(function() {
+
+    let name = $('#authorBookNameIndex').val();
+    let pageCount = $('#authorBookPageCountIndex').val();
+    let genreId = $('#authorBookGenreIndex').val();
+
+    let indexBook = $('#editTemporaryBookModal').data('index');
+    let book = bookService.getTemporaryBooks()[indexBook];
+
+    let id = book.id;
+    let authorId = book.authorId;
+
+    if (id) {
+        bookService.update(id, name, genreId, authorId, pageCount);
+    } else {
+        book.name = name;
+        book.pageCount = pageCount;
+        book.genreId = genreId;
+
+        bookService.updateHtmlBookList();
+    }
+
+    $('#editTemporaryBookModal').modal('hide'); 
+    $('#authorModal').modal('show');
+});
+
+$('#closeTemporaryBookModalButton').click(function(){
+    $('#editTemporaryBookModal').modal('hide'); 
+    $('#authorModal').modal('show');
+})

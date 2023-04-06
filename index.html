@@ -16,7 +16,7 @@
 
         <div class="application-block row justify-content-start align-items-center h-25">
             <div class="col-sm-6">
-                <!-- Начало кнопок переключателя авторы и жанры -->
+
                 <nav>
                     <div class="nav nav-tabs" id="nav-tab" role="tablist">
                         <button class="nav-link active" id="nav-authors-tab" data-bs-toggle="tab"
@@ -26,7 +26,7 @@
                             type="button" role="tab" aria-controls="nav-books" aria-selected="false">Жанры</button>
                     </div>
                 </nav>
-                <!-- Контент кнопок автор и книги-->
+
                 <div class="tab-content" id="nav-tabContent">
                     <div class="tab-pane fade show active" id="nav-authors" role="tabpanel" aria-labelledby="nav-authors-tab">
                         <table class="col-9" id="authorTable">
@@ -40,7 +40,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <!--------------------------------------------------------->
+
                             </tbody>
                         </table>
                         <div class="btn-author-done mt-4">
@@ -58,7 +58,6 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <!-- таблица з жанрами и модальное окно для редактирования  -->
                             </tbody>
                         </table>
                         <div class="btn-author-done mt-4">
@@ -69,20 +68,18 @@
         </div>
     </div>
 
-    <!-- Модальное окно редактирования автора -->
     <div class="modal fade" id="authorModal" tabindex="-1" role="dialog" aria-labelledby="authorModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
           <div class="modal-content">
 
             <div class="modal-header">
               <h5 class="modal-title" id="authorModalLabel">Форма автора</h5>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <button type="button" class="close border border-0" data-bs-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
 
             <div class="modal-body">
-
                 <div class="row g-3 align-items-center mb-2">
                     <div class="col-sm-5">
                         <label for="lname" class="col-form-label ">Фамилия</label>
@@ -122,9 +119,8 @@
                 <div class="catalog-books ">
                     <p class="catalog-books d-flex justify-content-between">Книги:</p>
                     <div id="bookTable"></div>
-                    <!-- Форма книг  -->
+                    
                     <div class="block-books">
-
                         <div class="row g-3 align-items-center mb-2">
                             <div class="col-sm-5">
                                 <label for="book-title" class="col-form-label">Название</label>
@@ -143,7 +139,7 @@
                             </div>
                         </div>
         
-                        <div id="genreList" class="row g-1 align-items-center mb-1">
+                        <div id="genreList" class="row g-2 align-items-center mb-1">
                             <div class="col-sm-5">
                                 <label>Жанр: </label>
                             </div>
@@ -161,14 +157,14 @@
             </div> 
 
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
+                <button type="button" class="btn btn-secondary"  data-bs-dismiss="modal">Закрыть</button>
                 <button type="button" class="btn btn-primary" id="saveAuthorButton">Сохранить</button>
             </div>
             </div> 
           </div>
         </div>
 
-    <!-- Модальное окно редактирования жанра -->
+
     <div class="modal fade" id="genreModal" tabindex="-1" aria-labelledby="genreModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -189,7 +185,6 @@
         </div>
     </div>
 
-<!-- ----------------------------------------------------------------------------- -->
 <div class="modal fade" id="detailsModal" tabindex="-1" aria-labelledby="detailsModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content table">
@@ -207,13 +202,47 @@
         </div>
     </div>
 </div>
-<!-- ---------------------------------------------------------------------------------------------------------- -->
 
+<div class="modal fade" id="editTemporaryBookModal" tabindex="-1" aria-labelledby="editTemporaryBookModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content table">
+            
+            <div class="block-books">
+                <div class="row g-3 align-items-center mb-2">
+                    <div class="col-sm-5">
+                        <label for="book-title" class="col-form-label">Название</label>
+                    </div>
+                    <div class="col-sm-6">
+                        <input id="authorBookNameIndex" type="text" id="nameBook" class="form-control ">
+                    </div>
+                </div>
+
+                <div class="row g-3 align-items-center mb-2">
+                    <div class="col-sm-5">
+                        <label for="number-pages" class="col-form-label ">Количество страниц</label>
+                    </div>
+                    <div class="col-sm-6">
+                        <input id="authorBookPageCountIndex" type="number" id="number-pages" class="form-control">
+                    </div>
+                </div>
+
+                <div id="genreList" class="row g-1 align-items-center mb-1">
+                    <div class="col-sm-5">
+                        <label>Жанр: </label>
+                    </div>
+                    <select id="authorBookGenreIndex" class="form-select" aria-label="Default select example"></select>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="saveTemporaryBookButton">Сохранить</button>
+                <button type="button" class="btn btn-secondary" id="closeTemporaryBookModalButton">Закрыть</button>
+            </div>
+        </div>
+    </div>
+</div>
 </div>
 
-
-
-    <!-- ссылки  -->
     <script src="https://code.jquery.com/jquery-3.6.3.min.js"
         integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
 

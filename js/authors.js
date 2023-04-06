@@ -71,6 +71,12 @@ class AuthorService
         return authorId;
     }
 
+    update(id, firstName, lastName, surName, birthday, numberBook) {
+        this.authorRepository.update(id, firstName, lastName, surName, new Date(birthday), numberBook);
+        let repositoryAuthor = this.authorRepository.getAll();
+        this.updateHtmlAuthorTable(repositoryAuthor);
+    }
+
     getAuthorById(id) {
         return this.authorRepository.getAuthorById(+id);
         
@@ -132,6 +138,7 @@ function click_addAuthor() {
 
     bookService.clearTemporaryBookList();
 
+    $('#authorModal').data('id', '');
     $('#authorModal').modal('show');
 }
 
@@ -149,16 +156,38 @@ $('#saveAuthorButton').click(function() {
     let surName = $('#authorModalSurNameInput').val();
     let birthday = $('#authorModalBirthdayInput').val();
 
+    let authorId = $('#authorModal').data('id');
+    let isEditAuthor = !!authorId;
+
     let temporaryBooks = bookService.getTemporaryBooks();
-    let authorId = authorService.add(firstName, lastName, surName, birthday, temporaryBooks.length);
 
-    for (let i = 0; i < temporaryBooks.length; i++) {
-        let book = temporaryBooks[i]
-        book.authorId = authorId
+    if (isEditAuthor) {
+        authorService.update(authorId, firstName, lastName, surName, birthday, temporaryBooks.length);
 
-        bookService.add(book.name, book.genreId, book.authorId, book.pageCount);
-    }
+        let books = bookService.getBooksByAuthorId(authorId);
+
+        for (let i = 0; i < temporaryBooks.length; i++) {
+            let book = temporaryBooks[i]
+            book.authorId = authorId;
+
+            if (book.id) {
+                bookService.update(book.id, book.name, book.genreId, book.authorId, book.pageCount);
+            } else {
+                bookService.add(book.name, book.genreId, book.authorId, book.pageCount);
+            }
+        }
+        
+    } else {
+        authorId = authorService.add(firstName, lastName, surName, birthday, temporaryBooks.length);
+
+        for (let i = 0; i < temporaryBooks.length; i++) {
+            let book = temporaryBooks[i]
+            book.authorId = authorId
     
+            bookService.add(book.name, book.genreId, book.authorId, book.pageCount);
+        }
+    }
+
     $('#authorModal').modal('hide');
 });
 
@@ -219,5 +248,13 @@ function click_editAuthor(button) {
     $('#authorModalBirthdayInput').val(author.birthday.toISOString().split('T')[0]);
     $('#authorModalNumberBookInput').val(author.numberBook);
 
+    $('#authorBookName').val('');
+    $('#authorBookGenreId').val('');
+    $('#authorBookPageCount').val('');
+
+    let books = bookService.getBooksByAuthorId(authorId);
+    bookService.setTemporaryBook(books);
+
+    $('#authorModal').data('id', authorId);
     $('#authorModal').modal('show');
 }
